@@ -33,9 +33,10 @@ const FriendsList = ({ user }) => {
       <h1>Welcome, {user.name.first} {user.name.last}</h1>
       <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
       <div className="friends-cards">
-        {friends.map((friend, index) => (
-          <FriendCard key={index} friend={friend} />
+        {friends.map((friend) => (
+          <FriendCard key={friend.login.uuid} friend={friend} />
         ))}
+
       </div>
     </div>
   );
