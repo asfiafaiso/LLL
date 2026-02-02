@@ -1,0 +1,170 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  opacity: 0;
+  transition: opacity 1s ease;
+
+  &.fade-in {
+    opacity: 1;
+  }
+
+  &.dark {
+    background: linear-gradient(-45deg, #667eea, #764ba2, #5a67d8, #8e44ad);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+    color: #fff;
+
+    .login-card {
+      background: rgba(31, 31, 31, 0.9);
+      color: #fff;
+
+      .input-group input {
+        background: #2b2b2b;
+        color: #fff;
+        border: 1px solid #555;
+        &:focus { border-color: #667eea; }
+      }
+
+      .btn-login { background: #667eea; &:hover { background: #5a67d8; } }
+      .signup-link a { color: #667eea; }
+    }
+  }
+
+  &.light {
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    color: #333;
+
+    .login-card {
+      background: #fff;
+      color: #333;
+
+      .input-group input {
+        background: #fff;
+        color: #333;
+        border: 1px solid #ccc;
+        &:focus { border-color: #5a67d8; }
+      }
+
+      .btn-login { background: #5a67d8; &:hover { background: #4353b3; } }
+      .signup-link a { color: #5a67d8; }
+    }
+  }
+
+  .theme-toggle {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: transparent;
+    border: none;
+    color: inherit;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 1000;
+  }
+
+  .login-card {
+    padding: 2.5rem 2rem;
+    border-radius: 15px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    transition: transform 0.3s ease, background 0.5s, color 0.5s;
+
+    &.shake { animation: shake 0.5s; }
+
+    h2 { margin-bottom: 1.5rem; }
+
+    .input-group {
+      position: relative;
+      margin-bottom: 1.5rem;
+      width: 100%;
+
+      .icon {
+        position: absolute;
+        top: 40%;
+        left: 15px;
+        transform: translateY(-50%);
+      }
+
+      input {
+        width: 100%;
+        padding: 0.75rem 0.75rem 0.75rem 2.5rem;
+        border-radius: 8px;
+        outline: none;
+        transition: border-color 0.3s, background 0.3s, color 0.3s;
+      }
+    }
+
+    .password-group .password-toggle {
+      position: absolute;
+      top: 45%;
+      right: 15px;
+      transform: translateY(-50%);
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    .btn-login {
+      width: 100%;
+      padding: 0.75rem 0.75rem 0.75rem 2.5rem;
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .signup-link {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+
+      a { font-weight: 500; }
+    }
+  }
+
+  .toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 0.75rem 1.25rem;
+    border-radius: 8px;
+    font-weight: 500;
+    opacity: 0;
+    animation: slideIn 0.5s forwards, fadeOut 0.5s 2s forwards;
+    z-index: 999;
+
+    &.success { background: #28a745; color: #fff; }
+    &.error { background: #dc3545; color: #fff; }
+  }
+}
+
+/* Animations */
+@keyframes shake {
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-10px); }
+  40% { transform: translateX(10px); }
+  60% { transform: translateX(-10px); }
+  80% { transform: translateX(10px); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}

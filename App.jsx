@@ -1,5 +1,5 @@
-// App.js
 import React, { useState } from 'react';
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import CryptoJS from 'crypto-js';
 import './App.css';
@@ -7,43 +7,64 @@ import Login from './Login';
 import FriendsList from './FriendsList';
 
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
+  const [toast, setToast] = useState({ message: '', type: '', visible: false });
+  const [shake, setShake] = useState(false);
+  const navigate = useNavigate();
+
+  const showToast = (message, type) => {
+    setToast({ message, type, visible: true });
+    setTimeout(() => setToast((t) => ({ ...t, visible: false })), 2500);
+  };
 
   const handleLogin = async (username, password) => {
     try {
-      // Fetch user data from the API
       const response = await axios.get('https://randomuser.me/api/?seed=lll');
       const userData = response.data.results[0];
-      
-      // Extract username and hashed password from fetched user data
+
       const apiUsername = userData.login.username;
       const apiHashedPassword = CryptoJS.SHA256(userData.login.password).toString();
-  
-      // Hash the password provided by the user
       const hashedPassword = CryptoJS.SHA256(password).toString();
-  
-      // Compare the provided username and hashed password with the fetched data
+
       if (username === apiUsername && hashedPassword === apiHashedPassword) {
-        setIsLoggedIn(true);
         setUser(userData);
+        showToast('Login Successful!', 'success');
+
+        // ✅ CHANGE URL
+        navigate('/friends');
       } else {
-        alert('Invalid username or password');
+        setShake(true);
+        showToast('Invalid Username or Password', 'error');
+        setTimeout(() => setShake(false), 500);
       }
     } catch (error) {
-      console.error('Error logging in:', error);
+      console.error(error);
     }
   };
-  
 
   return (
-    <div className="App">
-      {!isLoggedIn ? (
-        <Login onLogin={handleLogin} />
-      ) : (
-        <FriendsList user={user} />
-      )}
-    </div>
+    <Routes>
+      <Route
+        path="/login"
+        element={
+          <Login
+            onLogin={handleLogin}
+            toast={toast}
+            shake={shake}
+          />
+        }
+      />
+
+      <Route
+        path="/friends"
+        element={
+          user ? <FriendsList user={user} /> : <Navigate to="/login" />
+        }
+      />
+
+      {/* Default route */}
+      <Route path="*" element={<Navigate to="/login" />} />
+    </Routes>
   );
 };
 
